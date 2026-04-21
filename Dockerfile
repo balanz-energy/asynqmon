@@ -11,8 +11,8 @@ WORKDIR /static
 # react-scripts 5 / webpack 5 uses legacy OpenSSL APIs not available in OpenSSL 3.
 ENV NODE_OPTIONS=--openssl-legacy-provider
 
-# Install yarn globally.
-RUN npm i -g -s --unsafe-perm yarn
+# Enable yarn via corepack (ships with Node 20).
+RUN corepack enable
 
 # Copy only ./ui folder to the working directory.
 COPY ui .
