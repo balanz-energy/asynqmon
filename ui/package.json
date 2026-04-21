@@ -6,39 +6,37 @@
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.58",
-    "@reduxjs/toolkit": "1.6.2",
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.1.9",
-    "@types/jest": "^27.0.2",
+    "@reduxjs/toolkit": "^2.5.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.0",
+    "@types/jest": "^29.5.0",
     "@types/lodash.uniqby": "4.7.6",
-    "@types/node": "^16.3.1",
-    "@types/react": "^17.0.29",
-    "@types/react-dom": "^17.0.9",
-    "@types/react-redux": "7.1.19",
-    "@types/react-router-dom": "5.3.1",
-    "@types/react-syntax-highlighter": "13.5.2",
-    "@types/recharts": "1.8.20",
-    "axios": "0.21.2",
-    "clsx": "1.1.1",
-    "dayjs": "1.10.7",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-syntax-highlighter": "^15.5.0",
+    "axios": "^1.7.0",
+    "clsx": "^2.1.0",
+    "dayjs": "^1.11.0",
     "lodash.uniqby": "4.7.0",
-    "query-string": "7.0.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-redux": "7.2.4",
-    "react-router-dom": "5.3.0",
+    "query-string": "^7.1.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
-    "react-syntax-highlighter": "15.4.3",
-    "react-window": "1.8.6",
-    "recharts": "2.1.4",
-    "typescript": "~4.2.4"
+    "react-syntax-highlighter": "^15.5.0",
+    "react-window": "^1.8.10",
+    "recharts": "^2.12.0",
+    "typescript": "~5.5.4"
   },
   "scripts": {
     "start": "export PUBLIC_URL=http://localhost:3000/ && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:compat": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,8 +54,11 @@
     ]
   },
   "devDependencies": {
-    "@types/react-window": "1.8.5",
-    "redux-devtools": "3.7.0"
+    "@types/react-window": "^1.8.8"
   },
-  "homepage": "/[[.RootPath]]"
+  "homepage": "/[[.RootPath]]",
+  "resolutions": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0"
+  }
 }

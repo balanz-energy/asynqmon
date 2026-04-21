@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -77,13 +77,13 @@ const columns: TableColumn[] = [
 function Row(props: RowProps) {
   const { task } = props;
   const classes = useRowStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <TableRow
       key={task.id}
       className={classes.root}
       selected={props.isSelected}
-      onClick={() => history.push(taskDetailsPath(task.queue, task.id))}
+      onClick={() => navigate(taskDetailsPath(task.queue, task.id))}
     >
       {!window.READ_ONLY && (
         <TableCell padding="checkbox" onClick={(e) => e.stopPropagation()}>

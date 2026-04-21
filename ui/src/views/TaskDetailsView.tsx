@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -71,9 +71,9 @@ type Props = ConnectedProps<typeof connector>;
 
 function TaskDetailsView(props: Props) {
   const classes = useStyles();
-  const { qname, taskId } = useParams<TaskDetailsRouteParams>();
+  const { qname, taskId } = useParams() as unknown as TaskDetailsRouteParams;
   const { getTaskInfoAsync, pollInterval, listQueuesAsync, taskInfo } = props;
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const fetchTaskInfo = useMemo(() => {
     return () => {
@@ -291,7 +291,7 @@ function TaskDetailsView(props: Props) {
           <div className={classes.footer}>
             <Button
               startIcon={<ArrowBackIcon />}
-              onClick={() => history.goBack()}
+              onClick={() => navigate(-1)}
             >
               Go Back
             </Button>

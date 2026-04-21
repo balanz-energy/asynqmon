@@ -1,6 +1,6 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -78,7 +78,8 @@ const DURATION_URL_PARAM_KEY = "duration";
 
 function MetricsView(props: Props) {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const location = useLocation();
   const query = useQuery();
 
   const endTimeStr = query.get(ENDTIME_URL_PARAM_KEY);
@@ -102,8 +103,8 @@ function MetricsView(props: Props) {
       : {
           [DURATION_URL_PARAM_KEY]: durationSec,
         };
-    history.push({
-      ...history.location,
+    navigate({
+      ...location,
       search: queryString.stringify(urlQuery),
     });
     setEndTimeSec(endTime);
@@ -118,8 +119,8 @@ function MetricsView(props: Props) {
       : {
           [DURATION_URL_PARAM_KEY]: duration,
         };
-    history.push({
-      ...history.location,
+    navigate({
+      ...location,
       search: queryString.stringify(urlQuery),
     });
     setDurationSec(duration);

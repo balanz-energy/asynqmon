@@ -48,7 +48,7 @@ const defaultStatus = "active";
 
 function TasksView(props: ConnectedProps<typeof connector>) {
   const classes = useStyles();
-  const { qname } = useParams<QueueDetailsRouteParams>();
+  const { qname } = useParams() as unknown as QueueDetailsRouteParams;
   const query = useQuery();
   let selected = query.get("status");
   if (!selected || !validStatus.includes(selected)) {

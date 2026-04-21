@@ -13,7 +13,7 @@ import RetryTasksTable from "./RetryTasksTable";
 import ArchivedTasksTable from "./ArchivedTasksTable";
 import CompletedTasksTable from "./CompletedTasksTable";
 import AggregatingTasksTableContainer from "./AggregatingTasksTableContainer";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { queueDetailsPath, taskDetailsPath } from "../paths";
 import { QueueInfo } from "../reducers/queuesReducer";
 import { AppState } from "../store";
@@ -148,7 +148,7 @@ const useStyles = makeStyles((theme) => ({
 function TasksTableContainer(props: Props & ReduxProps) {
   const { currentStats } = props;
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
   const chips = [
     { key: "active", label: "Active", count: currentStats.active },
     { key: "pending", label: "Pending", count: currentStats.pending },
@@ -183,7 +183,7 @@ function TasksTableContainer(props: Props & ReduxProps) {
               }
               variant="outlined"
               color={props.selected === c.key ? "primary" : "default"}
-              onClick={() => history.push(queueDetailsPath(props.queue, c.key))}
+              onClick={() => navigate(queueDetailsPath(props.queue, c.key))}
             />
           ))}
         </div>
@@ -206,7 +206,7 @@ function TasksTableContainer(props: Props & ReduxProps) {
                 "aria-label": "search",
                 onKeyDown: (e) => {
                   if (e.key === "Enter") {
-                    history.push(
+                    navigate(
                       taskDetailsPath(props.queue, searchQuery.trim())
                     );
                   }

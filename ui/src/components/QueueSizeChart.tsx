@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "@material-ui/core/styles";
 import { queueDetailsPath } from "../paths";
 
@@ -37,10 +37,10 @@ function QueueSizeChart(props: Props) {
       params.activeLabel &&
       allQueues.includes(params.activeLabel)
     ) {
-      history.push(queueDetailsPath(params.activeLabel));
+      navigate(queueDetailsPath(params.activeLabel));
     }
   };
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <ResponsiveContainer>
       <BarChart

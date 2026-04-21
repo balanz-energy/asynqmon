@@ -1,9 +1,8 @@
-import { initialState as settingsInitialState } from "./reducers/settingsReducer"
-import { AppState } from "./store";
+import { initialState as settingsInitialState, SettingsState } from "./reducers/settingsReducer"
 
 const LOCAL_STORAGE_KEY = "asynqmon:state";
 
-export function loadState(): Partial<AppState> {
+export function loadState(): { settings?: SettingsState } {
   try {
     const serializedState = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (serializedState === null) {
@@ -22,7 +21,7 @@ export function loadState(): Partial<AppState> {
   }
 }
 
-export function saveState(state: AppState) {
+export function saveState(state: { settings: SettingsState }) {
   try {
     const serializedState = JSON.stringify({ settings: state.settings });
     localStorage.setItem(LOCAL_STORAGE_KEY, serializedState);

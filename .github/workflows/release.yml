@@ -13,42 +13,29 @@ jobs:
         goos: [darwin, linux, windows]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.16
+          go-version: "1.24"
 
       - name: Set up Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: "12"
-
-      - name: Get release
-        id: release
-        uses: bruceadams/get-release@v1.2.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          node-version: "20"
 
       - name: Install NPM packages
-        run: cd ui && rm yarn.lock && yarn install
+        run: cd ui && yarn install --frozen-lockfile
 
       - name: Build Release Binary
         run: |
           GOOS=${{ matrix.goos }} GOARCH=amd64 make build
-          tar -czvf asynqmon_${{ steps.release.outputs.tag_name }}_${{ matrix.goos }}_amd64.tar.gz asynqmon
-          ls
+          tar -czvf asynqmon_${{ github.ref_name }}_${{ matrix.goos }}_amd64.tar.gz asynqmon
 
-      - name: Upload Release Binary
-        id: upload-go-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ./asynqmon_${{ steps.release.outputs.tag_name }}_${{ matrix.goos }}_amd64.tar.gz
-          asset_name: asynqmon_${{ steps.release.outputs.tag_name }}_${{ matrix.goos }}_amd64.tar.gz
-          asset_content_type: application/gzip
+          files: asynqmon_${{ github.ref_name }}_${{ matrix.goos }}_amd64.tar.gz

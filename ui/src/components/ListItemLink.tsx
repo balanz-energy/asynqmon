@@ -6,7 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Tooltip from "@material-ui/core/Tooltip";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  useRouteMatch,
+  useMatch,
   Link as RouterLink,
   LinkProps as RouterLinkProps,
 } from "react-router-dom";
@@ -45,11 +45,10 @@ interface Props {
 function ListItemLink(props: Props): ReactElement {
   const classes = useStyles();
   const { icon, primary, to } = props;
-  const isMatch = useRouteMatch({
+  const isMatch = useMatch({
     path: to,
-    strict: true,
-    sensitive: true,
-    exact: true,
+    end: true,
+    caseSensitive: true,
   });
   const renderLink = React.useMemo(
     () =>
