@@ -1,44 +1,48 @@
 name: Publish Docker image
+
 on:
   push:
-    branches:
-      - "master"
     tags:
       - "v*"
-  pull_request:
-    branches:
-      - "master"
+
 jobs:
   push_to_registry:
-    name: Push Docker image to Docker Hub
+    name: Push Docker image to Scaleway Container Registry
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: hibiken/asynqmon
+          images: |
+            rg.nl-ams.scw.cloud/balanz-acceptance/asynqmon
+            rg.nl-ams.scw.cloud/balanz-production/asynqmon
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-      - name: Login to DockerHub
+            type=raw,value=latest
+
+      - name: Login to Scaleway Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: rg.nl-ams.scw.cloud
+          username: ${{ secrets.SCW_ACCESS_KEY }}
+          password: ${{ secrets.SCW_SECRET_KEY }}
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
