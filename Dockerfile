@@ -18,7 +18,7 @@ RUN corepack enable
 COPY ui .
 
 # Run yarn scripts (install & build).
-RUN yarn install && yarn build
+RUN yarn install --network-timeout 600000 && yarn build
 
 #
 # Second stage: 
