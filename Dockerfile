@@ -3,7 +3,7 @@
 # Building a frontend.
 #
 
-FROM node:20-alpine AS frontend
+FROM --platform=linux/amd64 node:20-alpine AS frontend
 
 # Move to a working directory (/static).
 WORKDIR /static
