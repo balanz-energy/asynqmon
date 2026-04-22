@@ -23,6 +23,7 @@ func TestParseFlags(t *testing.T) {
 
 				// Default values
 				Port:                  8080,
+				RedisUsername:         "",
 				RedisPassword:         "",
 				RedisTLS:              "",
 				RedisURL:              "",
@@ -34,6 +35,10 @@ func TestParseFlags(t *testing.T) {
 				PrometheusServerAddr:  "",
 				ReadOnly:              false,
 
+				ExplicitFlags: map[string]bool{
+					"redis-addr": true,
+					"redis-db":   true,
+				},
 				Args: []string{},
 			},
 		},
