@@ -67,10 +67,12 @@ func parseFlags(progname string, args []string) (cfg *Config, output string, err
 	flags.IntVar(&conf.Port, "port", getEnvOrDefaultInt("PORT", 8080), "port number to use for web ui server")
 	flags.StringVar(&conf.RedisAddr, "redis-addr", getEnvDefaultString("REDIS_ADDR", "127.0.0.1:6379"), "address of redis server to connect to")
 	flags.IntVar(&conf.RedisDB, "redis-db", getEnvOrDefaultInt("REDIS_DB", 0), "redis database number")
-	flags.StringVar(&conf.RedisUsername, "redis-username", getEnvDefaultString("REDIS_USERNAME", ""), "username to use when connecting to redis server")
-	flags.StringVar(&conf.RedisPassword, "redis-password", getEnvDefaultString("REDIS_PASSWORD", ""), "password to use when connecting to redis server")
+	// Sensitive flags: registered with empty defaults so secrets never appear in
+	// usage/error output. Env vars are applied manually after parsing below.
+	flags.StringVar(&conf.RedisUsername, "redis-username", "", "username to use when connecting to redis server")
+	flags.StringVar(&conf.RedisPassword, "redis-password", "", "password to use when connecting to redis server")
 	flags.StringVar(&conf.RedisTLS, "redis-tls", getEnvDefaultString("REDIS_TLS", ""), "server name for TLS validation used when connecting to redis server")
-	flags.StringVar(&conf.RedisURL, "redis-url", getEnvDefaultString("REDIS_URL", ""), "URL to redis server")
+	flags.StringVar(&conf.RedisURL, "redis-url", "", "URL to redis server")
 	flags.BoolVar(&conf.RedisInsecureTLS, "redis-insecure-tls", getEnvOrDefaultBool("REDIS_INSECURE_TLS", false), "disable TLS certificate host checks")
 	flags.StringVar(&conf.RedisClusterNodes, "redis-cluster-nodes", getEnvDefaultString("REDIS_CLUSTER_NODES", ""), "comma separated list of host:port addresses of cluster nodes")
 	flags.IntVar(&conf.MaxPayloadLength, "max-payload-length", getEnvOrDefaultInt("MAX_PAYLOAD_LENGTH", 200), "maximum number of utf8 characters printed in the payload cell in the Web UI")
@@ -87,6 +89,17 @@ func parseFlags(progname string, args []string) (cfg *Config, output string, err
 	flags.Visit(func(f *flag.Flag) {
 		conf.ExplicitFlags[f.Name] = true
 	})
+	// Apply env vars for sensitive flags only when not explicitly set on the CLI,
+	// so that secrets never appear as flag defaults in usage/error output.
+	if !conf.ExplicitFlags["redis-username"] {
+		conf.RedisUsername = getEnvDefaultString("REDIS_USERNAME", "")
+	}
+	if !conf.ExplicitFlags["redis-password"] {
+		conf.RedisPassword = getEnvDefaultString("REDIS_PASSWORD", "")
+	}
+	if !conf.ExplicitFlags["redis-url"] {
+		conf.RedisURL = getEnvDefaultString("REDIS_URL", "")
+	}
 	conf.Args = flags.Args()
 	return &conf, buf.String(), nil
 }
